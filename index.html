@@ -204,7 +204,7 @@ footer p{margin-top:.7rem;opacity:.92}
 
 <section class="paper" id="episode">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-tag">NOW PLAYING</span><h2>Episode 1 is here!</h2></div>
+    <div class="sec-head reveal"><span class="sec-tag">NOW PLAYING</span><h2>The episodes are here!</h2></div>
     <article class="ep-card reveal">
       <img class="ep-cover" src="assets/ep1-cover.webp" alt="Episode 1 artwork: cartoon Simone and Desi wearing colorful headphones, laughing at a podcast microphone with a boombox">
       <div class="ep-meta">
@@ -222,6 +222,26 @@ footer p{margin-top:.7rem;opacity:.92}
           </div>
           <span class="time"><span id="curTime">0:00</span> / <span id="durTime">2:51</span></span>
         </div>
+      </div>
+    </article>
+    <article class="ep-card reveal" style="margin-top:2rem">
+      <img class="ep-cover" src="assets/ep2-cover.webp" alt="Episode 2 artwork: cartoon Simone and Desi wearing colorful headphones, laughing at a podcast microphone with recipe cards, a checklist and a bag of groceries">
+      <div class="ep-meta">
+        <h3>Feed It the Facts</h3>
+        <p>Desi did her Episode 1 homework — she named the chair — and the answer got better… but it still didn't know her life. Simone teaches step two: after the role, <b>feed your AI the facts</b> (who it's for, your limits, what you like), so it stops guessing generic and starts answering <i>you</i>.</p>
+        <ul class="learn">
+          <li>Why your AI keeps guessing: it can only read your prompt, not your mind</li>
+          <li>The meal-planner makeover: same prompt, plus two facts, totally different dinner</li>
+          <li>The rule: two or three facts that change the answer — and only share what the job needs</li>
+        </ul>
+        <div class="player">
+          <button class="play-btn" id="playBtn2" aria-label="Play or pause Episode 2">▶</button>
+          <div class="progress-wrap">
+            <div class="progress" id="progress2" role="slider" aria-label="Episode 2 progress"><div class="progress-fill" id="progressFill2"></div></div>
+          </div>
+          <span class="time"><span id="curTime2">0:00</span> / <span id="durTime2">2:58</span></span>
+        </div>
+        <p style="margin-top:.8rem;font-weight:600">📚 <b>Ep 2 homework:</b> take your “Act as” prompt from Episode 1 and add just two facts to it. Run it again and watch the answer land closer to your real life.</p>
       </div>
     </article>
   </div>
@@ -313,12 +333,13 @@ footer p{margin-top:.7rem;opacity:.92}
 </footer>
 
 <audio id="epAudio" src="assets/ep1.mp3" preload="metadata"></audio>
+<audio id="ep2Audio" src="assets/ep2.mp3" preload="metadata"></audio>
 
 <script>
 (function(){
   "use strict";
   /* ticker */
-  var phrase = "PROMPT IT RIGHT ★ SAY IT RIGHT TO YOUR AI ★ EPISODE 1 OUT NOW ★ NAME THAT CHAIR ★ ";
+  var phrase = "PROMPT IT RIGHT ★ SAY IT RIGHT TO YOUR AI ★ EPISODE 1 OUT NOW ★ EPISODE 2 OUT NOW ★ FEED IT THE FACTS ★ NAME THAT CHAIR ★ ";
   document.getElementById('tickerTrack').textContent = phrase.repeat(4);
 
   /* equalizer bars */
@@ -326,22 +347,27 @@ footer p{margin-top:.7rem;opacity:.92}
   for (var i=0;i<48;i++){ bars += '<i style="animation-delay:'+(Math.random()*0.9).toFixed(2)+'s;animation-duration:'+(0.6+Math.random()*0.9).toFixed(2)+'s"></i>'; }
   eq.innerHTML = bars;
 
-  /* audio player */
-  var audio = document.getElementById('epAudio'),
-      playBtn = document.getElementById('playBtn'),
-      heroPlay = document.getElementById('heroPlay'),
-      fill = document.getElementById('progressFill'),
-      prog = document.getElementById('progress'),
-      cur = document.getElementById('curTime'), dur = document.getElementById('durTime');
+  /* audio players */
   function fmt(s){ if(!isFinite(s)) s=0; s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
-  function setIcon(){ var p = audio.paused; playBtn.textContent = p?'▶':'⏸'; heroPlay.textContent = p?'▶ Play Episode 1':'⏸ Pause Episode 1'; document.body.classList.toggle('playing', !p); }
-  function toggle(){ if(audio.paused){ audio.play(); } else { audio.pause(); } }
-  playBtn.addEventListener('click', toggle);
-  heroPlay.addEventListener('click', function(){ toggle(); document.getElementById('episode').scrollIntoView({behavior:'smooth'}); });
-  audio.addEventListener('play', setIcon); audio.addEventListener('pause', setIcon); audio.addEventListener('ended', setIcon);
-  audio.addEventListener('loadedmetadata', function(){ dur.textContent = fmt(audio.duration); });
-  audio.addEventListener('timeupdate', function(){ if(audio.duration){ fill.style.width = (audio.currentTime/audio.duration*100)+'%'; } cur.textContent = fmt(audio.currentTime); });
-  prog.addEventListener('click', function(e){ var r = prog.getBoundingClientRect(); if(audio.duration){ audio.currentTime = (e.clientX-r.left)/r.width*audio.duration; } });
+  var players = [];
+  function refreshBody(){ document.body.classList.toggle('playing', players.some(function(pl){ return !pl.audio.paused; })); }
+  function makePlayer(audioId, btnId, progId, fillId, curId, durId, heroId, heroLabel){
+    var pl = { audio: document.getElementById(audioId), btn: document.getElementById(btnId),
+      prog: document.getElementById(progId), fill: document.getElementById(fillId),
+      cur: document.getElementById(curId), dur: document.getElementById(durId),
+      hero: heroId ? document.getElementById(heroId) : null, heroLabel: heroLabel };
+    pl.setIcon = function(){ var p = pl.audio.paused; pl.btn.textContent = p?'\u25B6':'\u23F8'; if(pl.hero){ pl.hero.textContent = (p?'\u25B6 Play ':'\u23F8 Pause ')+pl.heroLabel; } refreshBody(); };
+    pl.toggle = function(){ if(pl.audio.paused){ players.forEach(function(o){ if(o!==pl) o.audio.pause(); }); pl.audio.play(); } else { pl.audio.pause(); } };
+    pl.btn.addEventListener('click', pl.toggle);
+    if(pl.hero){ pl.hero.addEventListener('click', function(){ pl.toggle(); document.getElementById('episode').scrollIntoView({behavior:'smooth'}); }); }
+    pl.audio.addEventListener('play', pl.setIcon); pl.audio.addEventListener('pause', pl.setIcon); pl.audio.addEventListener('ended', pl.setIcon);
+    pl.audio.addEventListener('loadedmetadata', function(){ pl.dur.textContent = fmt(pl.audio.duration); });
+    pl.audio.addEventListener('timeupdate', function(){ if(pl.audio.duration){ pl.fill.style.width = (pl.audio.currentTime/pl.audio.duration*100)+'%'; } pl.cur.textContent = fmt(pl.audio.currentTime); });
+    pl.prog.addEventListener('click', function(e){ var r = pl.prog.getBoundingClientRect(); if(pl.audio.duration){ pl.audio.currentTime = (e.clientX-r.left)/r.width*pl.audio.duration; } });
+    players.push(pl); return pl;
+  }
+  makePlayer('epAudio','playBtn','progress','progressFill','curTime','durTime','heroPlay','Episode 1');
+  makePlayer('ep2Audio','playBtn2','progress2','progressFill2','curTime2','durTime2',null,'');
 
   /* prompt builder */
   var roles = ['a friendly money coach','a fun social media coach','a business coach','a patient tutor','a meal planner','a caption writer','a workout buddy'];
