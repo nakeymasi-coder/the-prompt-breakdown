@@ -483,10 +483,69 @@ footer p{margin-top:.7rem;opacity:.92}
     chipsEl.querySelectorAll('.chip').forEach(function(c, ci){ c.classList.toggle('on', ci===i); });
     render();
   });
+  /* Clipboard feedback is shown only after a confirmed write. */
+  var copyLabel = copyBtn.textContent, copyPending = false, copyResetTimer;
+  var copyStatus = document.createElement('span');
+  copyStatus.setAttribute('role', 'status');
+  copyStatus.setAttribute('aria-live', 'polite');
+  copyStatus.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+  copyBtn.parentNode.appendChild(copyStatus);
+  var manualCopy = document.createElement('div');
+  manualCopy.hidden = true;
+  manualCopy.setAttribute('role', 'region');
+  manualCopy.setAttribute('aria-labelledby', 'manualCopyTitle');
+  manualCopy.style.cssText = 'margin-top:1rem;padding:1rem;border:2px solid currentColor;border-radius:12px';
+  manualCopy.innerHTML = '<h3 id="manualCopyTitle">Copy your prompt manually</h3>' +
+    '<p id="manualCopyHelp">Automatic copying is unavailable or was blocked. Your prompt has not been copied. Select the text below, then press Ctrl+C (Windows) or Command+C (Mac), or use your device\'s Copy menu. Paste it into your AI to check it.</p>' +
+    '<label for="manualCopyText">Your prompt</label>' +
+    '<textarea id="manualCopyText" readonly rows="5" aria-describedby="manualCopyHelp" style="display:block;width:100%;box-sizing:border-box;margin:.6rem 0;font:inherit"></textarea>' +
+    '<button type="button" class="btn btn-cyan" data-select-copy style="font-size:.9rem;padding:.65rem 1.1rem">Select prompt text</button> ' +
+    '<button type="button" class="btn btn-pink" data-close-copy style="font-size:.9rem;padding:.65rem 1.1rem">Close</button>';
+  copyBtn.parentNode.insertAdjacentElement('afterend', manualCopy);
+  var manualText = manualCopy.querySelector('textarea');
+  function selectManualText(){ manualText.focus(); manualText.select(); }
+  function closeManualCopy(){ manualCopy.hidden = true; copyBtn.focus(); }
+  manualCopy.querySelector('[data-select-copy]').addEventListener('click', selectManualText);
+  manualCopy.querySelector('[data-close-copy]').addEventListener('click', closeManualCopy);
+  manualCopy.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ e.preventDefault(); closeManualCopy(); }
+  });
+  function resetCopyLabel(){ copyBtn.textContent = copyLabel; copyBtn.classList.remove('copied'); }
   copyBtn.addEventListener('click', function(){
+    if(copyPending) return;
+    clearTimeout(copyResetTimer);
+    resetCopyLabel();
+    manualCopy.hidden = true;
+    copyStatus.textContent = '';
     var text = 'Act as '+role+'. '+(want.trim()? want.trim().charAt(0).toUpperCase()+want.trim().slice(1) : '');
-    function done(){ copyBtn.textContent='✅ Copied! Go paste it'; copyBtn.classList.add('copied'); setTimeout(function(){ copyBtn.textContent='📋 Copy my prompt'; copyBtn.classList.remove('copied'); }, 2200); }
-    if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, done); } else { done(); }
+    copyPending = true;
+    copyBtn.disabled = true;
+    copyBtn.setAttribute('aria-busy', 'true');
+    function finish(){
+      copyPending = false;
+      copyBtn.disabled = false;
+      copyBtn.removeAttribute('aria-busy');
+    }
+    function done(){
+      finish();
+      copyBtn.textContent = '\u2705 Copied! Go paste it';
+      copyBtn.classList.add('copied');
+      copyStatus.textContent = 'Copied! Go paste it';
+      copyResetTimer = setTimeout(resetCopyLabel, 2200);
+    }
+    function manual(){
+      finish();
+      resetCopyLabel();
+      manualText.value = text;
+      manualCopy.hidden = false;
+      copyStatus.textContent = 'Automatic copying did not complete. Use the manual copy instructions below.';
+      selectManualText();
+    }
+    try {
+      if(navigator.clipboard && typeof navigator.clipboard.writeText === 'function'){
+        navigator.clipboard.writeText(text).then(done, manual);
+      } else { manual(); }
+    } catch(error){ manual(); }
   });
   render();
 
