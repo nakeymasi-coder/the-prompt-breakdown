@@ -144,6 +144,11 @@ section{padding:4.2rem 1.2rem}
 .step{background:#fff;color:var(--ink);border:4px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:1.2rem;position:relative}
 .step .num{position:absolute;top:-20px;left:-14px;width:48px;height:48px;border-radius:50%;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center;font-family:'Archivo Black';font-size:1.15rem}
 .step h3{margin:.4rem 0 .4rem;font-size:1.15rem}
+.hw-tabs{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.9rem}
+.hw-tab{font:inherit;font-weight:800;font-size:.92rem;cursor:pointer;background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:.55rem 1.15rem;box-shadow:4px 4px 0 var(--ink)}
+.hw-tab.on{background:var(--pink);color:#fff}
+.hw-panel{display:none}
+.hw-panel.on{display:block}
 
 /* wall */
 .wall-form{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.4rem}
@@ -263,6 +268,30 @@ footer p{margin-top:.7rem;opacity:.92}
         <video class="ep-video" controls preload="none" poster="assets/ep2-cover.webp" src="assets/ep2-video.mp4" aria-label="Watch Episode 2: Feed It the Facts"></video>
       </div>
     </article>
+    <article class="ep-card reveal" style="margin-top:2rem">
+      <img class="ep-cover" src="assets/ep3-cover.webp" alt="Episode 3 artwork: cartoon Simone and Desi wearing colorful headphones, laughing at a podcast microphone with a checklist note and a boombox">
+      <div class="ep-meta">
+        <h3>Say How You Want It Back</h3>
+        <p>Desi's meal-planner answer was finally <i>right</i>… and it still came back like a cookbook wrote her a letter. Simone teaches step three: after the role and the facts, <b>say how you want the answer back</b> — how long, what shape, in what kind of words — so it lands like a note on your fridge, not a textbook.</p>
+        <ul class="learn">
+          <li>If you don't name the shape, your AI guesses — long, fancy, generic</li>
+          <li>Your shape choices: a short list, numbered steps, short paragraphs, a table</li>
+          <li>The fridge-note rule: plain words, like a person, not a textbook</li>
+        </ul>
+        <div class="player">
+          <button class="play-btn" id="playBtn3" aria-label="Play or pause Episode 3">▶</button>
+          <div class="progress-wrap">
+            <div class="progress" id="progress3" role="slider" aria-label="Episode 3 progress"><div class="progress-fill" id="progressFill3"></div></div>
+          </div>
+          <span class="time"><span id="curTime3">0:00</span> / <span id="durTime3">3:30</span></span>
+        </div>
+        <p style="margin-top:.8rem;font-weight:600">📚 <b>Ep 3 homework:</b> take the prompt you've been building and add one line at the end that says how you want the answer back. The homework tabs below have all three episodes' assignments in one place.</p>
+      </div>
+      <div class="watch-wrap">
+        <span class="watch-tag">▶ WATCH THE EPISODE</span>
+        <video class="ep-video" controls preload="none" poster="assets/ep3-cover.webp" src="assets/ep3-video.mp4" aria-label="Watch Episode 3: Say How You Want It Back"></video>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -307,11 +336,33 @@ footer p{margin-top:.7rem;opacity:.92}
 
 <section class="paper" id="homework">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-tag">FROM EPISODE 1</span><h2>Your homework 📚</h2></div>
-    <div class="steps">
-      <div class="step reveal"><div class="num" style="background:var(--cyan)">1</div><h3>Pick your regular</h3><p>Take one thing you ask your AI all the time — a caption, an email, a plan, anything.</p></div>
-      <div class="step reveal"><div class="num" style="background:var(--yellow)">2</div><h3>Name the chair</h3><p>Before you ask, start with “Act as a…” and name who it should be — a coach, a tutor, a caption writer.</p></div>
-      <div class="step reveal"><div class="num" style="background:var(--lime)">3</div><h3>Talk back</h3><p>First answer not it? Adjust the chair. New role, sharper details. You are allowed to talk back to it.</p></div>
+    <div class="sec-head reveal"><span class="sec-tag">FROM THE EPISODES</span><h2>Your homework 📚</h2></div>
+    <p class="reveal" style="max-width:62ch;font-weight:500;margin-bottom:1.2rem">Every episode ends with one small assignment, and they build on each other — same prompt, one step stronger every time. Pick your episode:</p>
+    <div class="hw-tabs reveal" role="tablist" aria-label="Homework by episode">
+      <button class="hw-tab on" type="button" data-hw="hw1" role="tab" aria-selected="true">Episode 1</button>
+      <button class="hw-tab" type="button" data-hw="hw2" role="tab" aria-selected="false">Episode 2</button>
+      <button class="hw-tab" type="button" data-hw="hw3" role="tab" aria-selected="false">Episode 3</button>
+    </div>
+    <div class="hw-panel on" id="hw1">
+      <div class="steps">
+        <div class="step reveal"><div class="num" style="background:var(--cyan)">1</div><h3>Pick your regular</h3><p>Take one thing you ask your AI all the time — a caption, an email, a plan, anything.</p></div>
+        <div class="step reveal"><div class="num" style="background:var(--yellow)">2</div><h3>Name the chair</h3><p>Before you ask, start with “Act as a…” and name who it should be — a coach, a tutor, a caption writer.</p></div>
+        <div class="step reveal"><div class="num" style="background:var(--lime)">3</div><h3>Talk back</h3><p>First answer not it? Adjust the chair. New role, sharper details. You are allowed to talk back to it.</p></div>
+      </div>
+    </div>
+    <div class="hw-panel" id="hw2">
+      <div class="steps">
+        <div class="step reveal"><div class="num" style="background:var(--cyan)">1</div><h3>Grab your Ep 1 prompt</h3><p>The one where you named the chair — “Act as a…” That's your starting point; don't write a new one.</p></div>
+        <div class="step reveal"><div class="num" style="background:var(--yellow)">2</div><h3>Add two facts</h3><p>Just two facts that change the answer: who it's for, a limit (time, money, size), or something you love or can't stand.</p></div>
+        <div class="step reveal"><div class="num" style="background:var(--lime)">3</div><h3>Run it again</h3><p>Same prompt, plus your facts. See how much closer the answer lands to your real life — and only share what the job needs.</p></div>
+      </div>
+    </div>
+    <div class="hw-panel" id="hw3">
+      <div class="steps">
+        <div class="step reveal"><div class="num" style="background:var(--cyan)">1</div><h3>Use your running prompt</h3><p>Your “Act as” prompt with your two facts from Episode 2 — it's got the role and the facts. One step left.</p></div>
+        <div class="step reveal"><div class="num" style="background:var(--yellow)">2</div><h3>Add one line at the end</h3><p>Say how you want the answer back: “Give it to me as a short list, in plain words, like a note on my fridge.” Shape + words, your pick.</p></div>
+        <div class="step reveal"><div class="num" style="background:var(--lime)">3</div><h3>Read it out loud</h3><p>Does it read easy, like a fridge note? If not, don't start over — talk back: “Shorter. Plainer. As a list.”</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -340,7 +391,7 @@ footer p{margin-top:.7rem;opacity:.92}
     <details class="reveal"><summary>What is The Prompt Breakdown?</summary><p>A podcast that teaches you how to write prompts — the instructions you give an AI — in plain, simple language. Every episode breaks one prompt skill down so you can use it the same day.</p></details>
     <details class="reveal"><summary>Who is it for?</summary><p>Beginners 40 and over who already use AI but feel like their answers come back weak, dry, or just… off. If you type a question and get back the cleaning-supplies answer, this show is yours.</p></details>
     <details class="reveal"><summary>What do I need to follow along?</summary><p>Just whatever AI you already chat with and something you ask it all the time. Simone teaches, Desi tests it out loud — you try it right along with her.</p></details>
-    <details class="reveal"><summary>Where do new episodes land?</summary><p>Right here. Episodes 1 and 2 are up top — watch the videos or just listen — and more episodes are on the way.</p></details>
+    <details class="reveal"><summary>Where do new episodes land?</summary><p>Right here. Episodes 1, 2 and 3 are up top — watch the videos or just listen — and more episodes are on the way. Each episode's homework lives in the homework tabs above.</p></details>
   </div>
 </section>
 
@@ -362,12 +413,13 @@ footer p{margin-top:.7rem;opacity:.92}
 
 <audio id="epAudio" src="assets/ep1.mp3" preload="metadata"></audio>
 <audio id="ep2Audio" src="assets/ep2.mp3" preload="metadata"></audio>
+<audio id="ep3Audio" src="assets/ep3.mp3" preload="metadata"></audio>
 
 <script>
 (function(){
   "use strict";
   /* ticker */
-  var phrase = "PROMPT IT RIGHT ★ SAY IT RIGHT TO YOUR AI ★ EPISODE 1 OUT NOW ★ EPISODE 2 OUT NOW ★ FEED IT THE FACTS ★ NAME THAT CHAIR ★ ";
+  var phrase = "PROMPT IT RIGHT ★ SAY IT RIGHT TO YOUR AI ★ EPISODE 1 OUT NOW ★ EPISODE 2 OUT NOW ★ EPISODE 3 OUT NOW ★ SAY HOW YOU WANT IT BACK ★ FEED IT THE FACTS ★ NAME THAT CHAIR ★ ";
   document.getElementById('tickerTrack').textContent = phrase.repeat(4);
 
   /* equalizer bars */
@@ -396,6 +448,18 @@ footer p{margin-top:.7rem;opacity:.92}
   }
   makePlayer('epAudio','playBtn','progress','progressFill','curTime','durTime','heroPlay','Episode 1');
   makePlayer('ep2Audio','playBtn2','progress2','progressFill2','curTime2','durTime2',null,'');
+  makePlayer('ep3Audio','playBtn3','progress3','progressFill3','curTime3','durTime3',null,'');
+
+  /* homework tabs */
+  var hwTabs = Array.prototype.slice.call(document.querySelectorAll('.hw-tab'));
+  hwTabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      hwTabs.forEach(function(t){ t.classList.remove('on'); t.setAttribute('aria-selected','false'); });
+      tab.classList.add('on'); tab.setAttribute('aria-selected','true');
+      document.querySelectorAll('.hw-panel').forEach(function(p){ p.classList.remove('on'); });
+      document.getElementById(tab.getAttribute('data-hw')).classList.add('on');
+    });
+  });
 
   /* prompt builder */
   var roles = ['a friendly money coach','a fun social media coach','a business coach','a patient tutor','a meal planner','a caption writer','a workout buddy'];
