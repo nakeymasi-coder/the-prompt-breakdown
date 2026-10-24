@@ -102,6 +102,9 @@ section{padding:4.2rem 1.2rem}
 .progress{height:16px;background:#fff;border:2px solid #fff;cursor:pointer;position:relative}
 .progress-fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,var(--lime) 0 10px,var(--cyan) 10px 20px)}
 .time{color:#fff;font-weight:700;font-variant-numeric:tabular-nums;font-size:.95rem}
+.watch-wrap{grid-column:1/-1}
+.watch-tag{display:inline-block;background:var(--pink);color:#fff;border:3px solid var(--ink);padding:.25rem .7rem;font-family:'Archivo Black';font-size:.8rem;letter-spacing:.06em;transform:rotate(-1.5deg);margin-bottom:.6rem}
+.ep-video{width:100%;display:block;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);background:#000;aspect-ratio:16/9}
 
 /* hosts */
 .hosts{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.8rem}
@@ -204,7 +207,7 @@ footer p{margin-top:.7rem;opacity:.92}
 
 <section class="paper" id="episode">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-tag">NOW PLAYING</span><h2>The episodes are here!</h2></div>
+    <div class="sec-head reveal"><span class="sec-tag">WATCH + LISTEN</span><h2>The episodes are here!</h2></div>
     <article class="ep-card reveal">
       <img class="ep-cover" src="assets/ep1-cover.webp" alt="Episode 1 artwork: cartoon Simone and Desi wearing colorful headphones, laughing at a podcast microphone with a boombox">
       <div class="ep-meta">
@@ -222,6 +225,10 @@ footer p{margin-top:.7rem;opacity:.92}
           </div>
           <span class="time"><span id="curTime">0:00</span> / <span id="durTime">2:51</span></span>
         </div>
+      </div>
+      <div class="watch-wrap">
+        <span class="watch-tag">▶ WATCH THE EPISODE</span>
+        <video class="ep-video" controls preload="none" poster="assets/ep1-cover.webp" src="assets/ep1-video.mp4" aria-label="Watch Episode 1: Start With Act As"></video>
       </div>
     </article>
     <article class="ep-card reveal" style="margin-top:2rem">
@@ -242,6 +249,10 @@ footer p{margin-top:.7rem;opacity:.92}
           <span class="time"><span id="curTime2">0:00</span> / <span id="durTime2">2:58</span></span>
         </div>
         <p style="margin-top:.8rem;font-weight:600">📚 <b>Ep 2 homework:</b> take your “Act as” prompt from Episode 1 and add just two facts to it. Run it again and watch the answer land closer to your real life.</p>
+      </div>
+      <div class="watch-wrap">
+        <span class="watch-tag">▶ WATCH THE EPISODE</span>
+        <video class="ep-video" controls preload="none" poster="assets/ep2-cover.webp" src="assets/ep2-video.mp4" aria-label="Watch Episode 2: Feed It the Facts"></video>
       </div>
     </article>
   </div>
@@ -321,7 +332,7 @@ footer p{margin-top:.7rem;opacity:.92}
     <details class="reveal"><summary>What is The Prompt Breakdown?</summary><p>A podcast that teaches you how to write prompts — the instructions you give an AI — in plain, simple language. Every episode breaks one prompt skill down so you can use it the same day.</p></details>
     <details class="reveal"><summary>Who is it for?</summary><p>Beginners 40 and over who already use AI but feel like their answers come back weak, dry, or just… off. If you type a question and get back the cleaning-supplies answer, this show is yours.</p></details>
     <details class="reveal"><summary>What do I need to follow along?</summary><p>Just whatever AI you already chat with and something you ask it all the time. Simone teaches, Desi tests it out loud — you try it right along with her.</p></details>
-    <details class="reveal"><summary>Where do new episodes land?</summary><p>Right here. Episode 1, “Start With ‘Act As’,” is up top and ready to play — and more episodes are on the way.</p></details>
+    <details class="reveal"><summary>Where do new episodes land?</summary><p>Right here. Episodes 1 and 2 are up top — watch the videos or just listen — and more episodes are on the way.</p></details>
   </div>
 </section>
 
