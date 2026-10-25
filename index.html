@@ -158,6 +158,18 @@ section{padding:4.2rem 1.2rem}
 .hw-tab.on{background:var(--pink);color:#fff}
 .hw-panel{display:none}
 .hw-panel.on{display:block}
+.wall-tabs{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.wall-tab{font:inherit;font-weight:800;font-size:.92rem;cursor:pointer;background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:.55rem 1.15rem;box-shadow:4px 4px 0 var(--ink)}
+.wall-tab.on{background:var(--cyan);color:var(--ink)}
+.wall-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.7rem;flex:1 1 100%}
+.wall-field{display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.wall-field.wide{grid-column:1/-1}
+.wall-field label{font-weight:800;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:#fff}
+.wall-field input,.wall-field select,.wall-field textarea{border:3px solid var(--ink);padding:.75rem;font:inherit;background:#fff;color:var(--ink);width:100%}
+.wall-field textarea{min-height:72px;resize:vertical}
+.wall-actions{display:flex;gap:.7rem;flex-wrap:wrap;flex:1 1 100%}
+.wall-preview{background:#fff;color:var(--ink);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:.9rem 1rem;margin:0 0 1.3rem;font-weight:600;flex:1 1 100%}
+.wall-preview b{font-family:'Archivo Black';font-size:.72rem;text-transform:uppercase;display:block;margin-bottom:.35rem}
 
 /* wall */
 .wall-form{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.4rem}
@@ -351,6 +363,7 @@ footer p{margin-top:.7rem;opacity:.92}
       <button class="hw-tab on" type="button" data-hw="hw1" role="tab" aria-selected="true">Episode 1</button>
       <button class="hw-tab" type="button" data-hw="hw2" role="tab" aria-selected="false">Episode 2</button>
       <button class="hw-tab" type="button" data-hw="hw3" role="tab" aria-selected="false">Episode 3</button>
+       <button class="hw-tab" type="button" data-hw="hw4" role="tab" aria-selected="false">Episode 4</button>
     </div>
     <div class="hw-panel on" id="hw1">
       <div class="steps">
@@ -373,24 +386,36 @@ footer p{margin-top:.7rem;opacity:.92}
         <div class="step reveal"><div class="num" style="background:var(--lime)">3</div><h3>Read it out loud</h3><p>Does it read easy, like a fridge note? If not, don't start over — talk back: “Shorter. Plainer. As a list.”</p></div>
       </div>
     </div>
+    <div class="hw-panel" id="hw4">
+      <div class="steps">
+        <div class="step reveal"><div class="num" style="background:var(--cyan)">1</div><h3>Pick an almost-right answer</h3><p>One old answer you didn’t love. Don’t retype the prompt — the answer itself is your starting point.</p></div>
+        <div class="step reveal"><div class="num" style="background:var(--yellow)">2</div><h3>Write one talk-back sentence</h3><p>Keep what worked, name ONE change: “Keep the list, just swap the cilantro dinner for something else.”</p></div>
+        <div class="step reveal"><div class="num" style="background:var(--lime)">3</div><h3>Close the door</h3><p>Add “Nothing else changes.” Send just that sentence — little turns, not yanking the wheel.</p></div>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="purple-sec" id="wall">
   <div class="wrap">
     <img class="sticker-img reveal" src="assets/cassette.webp" alt="" aria-hidden="true" style="float:right;width:clamp(110px,18vw,170px);margin:0 0 1rem 1.2rem;transform:rotate(-3deg)">
-    <div class="sec-head reveal"><span class="sec-tag" style="background:var(--yellow);color:var(--ink)">SAY IT BACK</span><h2>The prompt wall 🧱✨</h2></div>
-    <p class="reveal" style="max-width:60ch;font-weight:500;margin-bottom:1.2rem">Did the chair trick work for you? Slap your first “Act as…” prompt on the wall. (It lives on this page only — a little fridge door for your wins.)</p>
-    <form class="wall-form reveal" id="wallForm">
-      <input type="text" id="wallName" placeholder="Your name" maxlength="24" autocomplete="off">
-      <input type="text" id="wallText" placeholder="Act as a… (what did you try?)" maxlength="110" autocomplete="off" style="flex:2">
-      <button class="btn btn-lime" type="submit" style="font-size:.9rem;padding:.65rem 1.1rem">📌 Stick it up</button>
-    </form>
-    <div class="wall" id="wallBoard">
-      <div class="note" style="background:var(--yellow);transform:rotate(-2deg)"><b>Simone says</b>Role first, then your request. That's the whole recipe.</div>
-      <div class="note" style="background:#ffb3dd;transform:rotate(1.6deg)"><b>Desi tried it</b>Act as a friendly money coach… and it did NOT make me feel bad about my card. It worked!</div>
-      <div class="note" style="background:#a8ecff;transform:rotate(-1deg)"><b>Your turn</b>The wall is waiting on your first prompt. Go on — name that chair. 🪑</div>
+    <div class="sec-head reveal"><span class="sec-tag" style="background:var(--yellow);color:var(--ink)">DO THE HOMEWORK</span><h2>The homework wall 🧱✨</h2></div>
+    <p class="reveal" style="max-width:64ch;font-weight:500;margin-bottom:1.2rem" id="wallBlurb"></p>
+    <div class="wall-tabs reveal" role="tablist" aria-label="Homework wall by episode">
+      <button class="wall-tab on" type="button" data-board="ep1" role="tab" aria-selected="true">Episode 1</button>
+      <button class="wall-tab" type="button" data-board="ep2" role="tab" aria-selected="false">Episode 2</button>
+      <button class="wall-tab" type="button" data-board="ep3" role="tab" aria-selected="false">Episode 3</button>
+      <button class="wall-tab" type="button" data-board="ep4" role="tab" aria-selected="false">Episode 4</button>
     </div>
+    <form class="wall-form reveal" id="wallForm">
+      <div class="wall-fields" id="wallFields"></div>
+      <div class="wall-preview" id="wallPreview" aria-live="polite"></div>
+      <div class="wall-actions">
+        <button class="btn btn-lime" type="submit" id="wallStick" style="font-size:.9rem;padding:.65rem 1.1rem">📌 Stick it up</button>
+        <button class="btn btn-cyan" type="button" id="wallCopy" style="font-size:.9rem;padding:.65rem 1.1rem">📋 Copy my homework</button>
+      </div>
+    </form>
+    <div class="wall" id="wallBoard"></div>
   </div>
 </section>
 
@@ -400,7 +425,7 @@ footer p{margin-top:.7rem;opacity:.92}
     <details class="reveal"><summary>What is The Prompt Breakdown?</summary><p>A podcast that teaches you how to write prompts — the instructions you give an AI — in plain, simple language. Every episode breaks one prompt skill down so you can use it the same day.</p></details>
     <details class="reveal"><summary>Who is it for?</summary><p>Beginners 40 and over who already use AI but feel like their answers come back weak, dry, or just… off. If you type a question and get back the cleaning-supplies answer, this show is yours.</p></details>
     <details class="reveal"><summary>What do I need to follow along?</summary><p>Just whatever AI you already chat with and something you ask it all the time. Simone teaches, Desi tests it out loud — you try it right along with her.</p></details>
-    <details class="reveal"><summary>Where do new episodes land?</summary><p>Right here. Episodes 1, 2 and 3 are up top — watch the videos or just listen — and more episodes are on the way. Each episode's homework lives in the homework tabs above.</p></details>
+    <details class="reveal"><summary>Where do new episodes land?</summary><p>Right here. Episodes 1, 2 and 3 are up top — watch the videos or just listen. Episode 4 is on the way, and its homework is already waiting: every episode now has interactive homework on the homework wall, where you build it and stick it up as a sticky note.</p></details>
   </div>
 </section>
 
@@ -558,20 +583,192 @@ footer p{margin-top:.7rem;opacity:.92}
   });
   render();
 
-  /* prompt wall */
+  /* homework wall */
+  var wallEsc = function(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
   var wallColors = ['#ffd62e','#ffb3dd','#a8ecff','#d3ffa8','#ffe3ae','#e3c8ff'];
+  var wallStarterColors = ['#ffd62e','#ffb3dd','#a8ecff'];
+  var wallStarterRots = [-2, 1.6, -1];
+  function wallStripDot(t){ return String(t || '').trim().replace(/\.+$/,''); }
+  function wallEndDot(t){ t = String(t || '').trim(); if(!t) return t; return /[.!?]$/.test(t) ? t : t + '.'; }
+  var wallBoards = {
+    ep1: {
+      label: 'Episode 1', lesson: 'Name the Chair',
+      blurb: 'Episode 1 homework: name the chair. Write your first “Act as…” prompt and slap it on the wall. (It lives on this page only — a little fridge door for your wins.)',
+      button: '📌 Stick my Ep 1 homework',
+      required: ['text'],
+      fields: [
+        {id:'name', label:'Your name', ph:'Your name', max:24},
+        {id:'text', label:'Your “Act as…” prompt', ph:'Act as a… (what did you try?)', max:160, wide:true}
+      ],
+      build: function(v){ return v.text || ''; },
+      notes: [
+        {name:'Simone says', text:'Role first, then your request. That’s the whole recipe.'},
+        {name:'Desi tried it', text:'Act as a friendly money coach… and it did NOT make me feel bad about my card. It worked!'},
+        {name:'Your turn', text:'The wall is waiting on your first prompt. Go on — name that chair. 🪑'}
+      ]
+    },
+    ep2: {
+      label: 'Episode 2', lesson: 'Feed It the Facts',
+      blurb: 'Episode 2 homework: take your Episode 1 “Act as…” prompt and feed it TWO facts — who it is for, a limit, a like or a dislike. Build your upgraded prompt here, copy it into your AI, then stick it on the wall.',
+      button: '📌 Stick my Ep 2 homework',
+      required: ['base'],
+      fields: [
+        {id:'name', label:'Your name', ph:'Your name', max:24},
+        {id:'base', label:'Your Episode 1 prompt', ph:'Act as a patient meal planner…', max:220, wide:true},
+        {id:'fact1', label:'Fact 1 — who it’s for, or a limit', ph:'Example: I cook for one, on a budget', max:120},
+        {id:'fact2', label:'Fact 2 — a like or a dislike', ph:'Example: No cilantro, ever', max:120}
+      ],
+      build: function(v){
+        if(!v.base) return '';
+        var facts = [];
+        if(v.fact1) facts.push(wallStripDot(v.fact1));
+        if(v.fact2) facts.push(wallStripDot(v.fact2));
+        if(!facts.length) return v.base;
+        return wallEndDot(v.base) + ' Two facts about me: ' + facts.join('; ') + '.';
+      },
+      notes: [
+        {name:'Simone says', text:'Facts are the difference between a stranger’s answer and YOUR answer.'},
+        {name:'Desi tried it', text:'Added “for one, on a budget” and “no cilantro” — the list finally sounded like my life.'},
+        {name:'Your turn', text:'Two facts. That is the whole assignment. Stick yours up.'}
+      ]
+    },
+    ep3: {
+      label: 'Episode 3', lesson: 'Say How You Want It Back',
+      blurb: 'Episode 3 homework: take the prompt you have been building and add ONE line at the end that says how you want the answer back — the shape and the words. Build it here, copy it into your AI, then stick it on the wall.',
+      button: '📌 Stick my Ep 3 homework',
+      required: ['prompt'],
+      fields: [
+        {id:'name', label:'Your name', ph:'Your name', max:24},
+        {id:'prompt', label:'Your running prompt (Ep 1 + Ep 2)', ph:'Act as a patient meal planner… two facts about me…', max:300, wide:true, type:'textarea'},
+        {id:'shape', label:'Pick the shape', type:'select', options:['a short list','numbered steps','short paragraphs','a table']},
+        {id:'words', label:'Pick the words', type:'select', options:['plain words, like a note on my fridge','friendly, everyday words','short and simple words','plain words, nothing fancy']}
+      ],
+      build: function(v){
+        if(!v.prompt) return '';
+        return wallEndDot(v.prompt) + ' Give it to me as ' + v.shape + ', in ' + v.words + '.';
+      },
+      notes: [
+        {name:'Simone says', text:'If you don’t name the shape, your AI guesses — and it guesses LONG.'},
+        {name:'Desi tried it', text:'“Short list, plain words, like a note on my fridge.” It finally read like ME.'},
+        {name:'Your turn', text:'Shape + words. One line at the end. Stick it up.'}
+      ]
+    },
+    ep4: {
+      label: 'Episode 4', lesson: 'Talk Back to It',
+      blurb: 'Episode 4 homework — the episode is on its way and your homework is ready: take ONE old answer you didn’t love. Don’t retype the prompt. Talk back to it — keep what worked, change one thing, nothing else changes.',
+      button: '📌 Stick my Ep 4 homework',
+      required: ['keep','change'],
+      fields: [
+        {id:'name', label:'Your name', ph:'Your name', max:24},
+        {id:'keep', label:'Keep this — what worked?', ph:'Example: the meal list', max:140, wide:true},
+        {id:'change', label:'Change this — ONE thing only', ph:'Example: swap the cilantro dinner for something else', max:140, wide:true}
+      ],
+      build: function(v){
+        if(!v.keep || !v.change) return '';
+        return 'Keep ' + wallStripDot(v.keep) + '. Change ' + wallStripDot(v.change) + '. Nothing else changes.';
+      },
+      notes: [
+        {name:'Simone says', text:'Keep means protect. The good parts stay — one thing changes.'},
+        {name:'Desi tried it', text:'Keep lines one and three. Make the middle one funnier. Nothing else changes.'},
+        {name:'Your turn', text:'Pick one almost-right answer and talk back to it. Little turns.'}
+      ]
+    }
+  };
+  var wallAdded = { ep1: [], ep2: [], ep3: [], ep4: [] };
+  var wallCurrent = 'ep1';
+  function wallVal(id){ var el = document.getElementById('wall_' + id); return el ? el.value.trim() : ''; }
+  function wallValues(){ var b = wallBoards[wallCurrent]; var v = {}; b.fields.forEach(function(f){ if(f.id !== 'name') v[f.id] = wallVal(f.id); }); return v; }
+  function wallBuildText(){ return wallBoards[wallCurrent].build(wallValues()); }
+  function updateWallPreview(){
+    var b = wallBoards[wallCurrent];
+    var t = wallBuildText();
+    document.getElementById('wallPreview').innerHTML = '<b>Your ' + b.label + ' homework — ' + b.lesson + '</b>' + (t ? wallEsc(t) : 'Start filling it in and your finished homework builds itself right here — ready to copy into your AI.');
+  }
+  function renderWallBoard(){
+    var b = wallBoards[wallCurrent];
+    var board = document.getElementById('wallBoard');
+    board.innerHTML = '';
+    var notes = wallAdded[wallCurrent].concat(b.notes);
+    notes.forEach(function(n, i){
+      var d = document.createElement('div'); d.className = 'note';
+      d.style.background = n.color || wallStarterColors[i % wallStarterColors.length];
+      d.style.transform = 'rotate(' + (typeof n.rot === 'number' ? n.rot : wallStarterRots[i % wallStarterRots.length]) + 'deg)';
+      d.innerHTML = '<b>' + wallEsc(n.name) + '</b>' + wallEsc(n.text);
+      board.appendChild(d);
+    });
+  }
+  function renderWallFields(){
+    var b = wallBoards[wallCurrent];
+    var html = '';
+    b.fields.forEach(function(f){
+      html += '<div class="wall-field' + (f.wide ? ' wide' : '') + '"><label for="wall_' + f.id + '">' + f.label + '</label>';
+      if(f.type === 'select'){
+        html += '<select id="wall_' + f.id + '">';
+        f.options.forEach(function(o){ html += '<option value="' + wallEsc(o) + '">' + wallEsc(o) + '</option>'; });
+        html += '</select>';
+      } else if(f.type === 'textarea'){
+        html += '<textarea id="wall_' + f.id + '" placeholder="' + wallEsc(f.ph || '') + '" maxlength="' + (f.max || 300) + '" autocomplete="off"></textarea>';
+      } else {
+        html += '<input type="text" id="wall_' + f.id + '" placeholder="' + wallEsc(f.ph || '') + '" maxlength="' + (f.max || 120) + '" autocomplete="off">';
+      }
+      html += '</div>';
+    });
+    document.getElementById('wallFields').innerHTML = html;
+    document.getElementById('wallBlurb').textContent = b.blurb;
+    document.getElementById('wallStick').textContent = b.button;
+    b.fields.forEach(function(f){
+      var el = document.getElementById('wall_' + f.id);
+      if(el){ el.addEventListener('input', updateWallPreview); el.addEventListener('change', updateWallPreview); }
+    });
+    renderWallBoard();
+    updateWallPreview();
+  }
+  var wallTabs = Array.prototype.slice.call(document.querySelectorAll('.wall-tab'));
+  wallTabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      wallTabs.forEach(function(t){ t.classList.remove('on'); t.setAttribute('aria-selected','false'); });
+      tab.classList.add('on'); tab.setAttribute('aria-selected','true');
+      wallCurrent = tab.getAttribute('data-board');
+      renderWallFields();
+    });
+  });
   document.getElementById('wallForm').addEventListener('submit', function(e){
     e.preventDefault();
-    var name = document.getElementById('wallName').value.trim() || 'Anonymous glow-getter';
-    var text = document.getElementById('wallText').value.trim();
-    if(!text){ document.getElementById('wallText').focus(); return; }
-    var d = document.createElement('div'); d.className='note';
-    d.style.background = wallColors[Math.floor(Math.random()*wallColors.length)];
-    d.style.transform = 'rotate('+(Math.random()*4-2).toFixed(1)+'deg)';
-    d.innerHTML = '<b>'+esc(name)+'</b>'+esc(text);
-    document.getElementById('wallBoard').prepend(d);
-    document.getElementById('wallText').value='';
+    var b = wallBoards[wallCurrent];
+    for(var i = 0; i < b.required.length; i++){
+      if(!wallVal(b.required[i])){ document.getElementById('wall_' + b.required[i]).focus(); return; }
+    }
+    var text = wallBuildText();
+    if(!text) return;
+    var name = wallVal('name') || 'Anonymous glow-getter';
+    wallAdded[wallCurrent].unshift({
+      name: name + ' • ' + b.label,
+      text: text,
+      color: wallColors[Math.floor(Math.random() * wallColors.length)],
+      rot: Math.round((Math.random() * 4 - 2) * 10) / 10
+    });
+    renderWallBoard();
+    b.fields.forEach(function(f){ if(f.id !== 'name'){ var el = document.getElementById('wall_' + f.id); if(el && el.tagName !== 'SELECT') el.value = ''; } });
+    updateWallPreview();
   });
+  document.getElementById('wallCopy').addEventListener('click', function(){
+    var b = wallBoards[wallCurrent];
+    var text = wallBuildText();
+    if(!text){ var first = document.getElementById('wall_' + b.required[0]); if(first) first.focus(); return; }
+    var btn = this;
+    function done(){ btn.textContent = '✅ Copied!'; setTimeout(function(){ btn.textContent = '📋 Copy my homework'; }, 1600); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, function(){ wallManualCopy(text, done); });
+    } else { wallManualCopy(text, done); }
+  });
+  function wallManualCopy(text, done){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); } catch(err){}
+    ta.remove(); done();
+  }
+  renderWallFields();
 
   /* scroll reveal */
   var io = new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); }, {threshold:.12});
